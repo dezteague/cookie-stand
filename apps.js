@@ -59,9 +59,9 @@ pikeAndFirst.render();
 
 var seatacAirport = {
   name: 'SeaTac Airport',
-  minCustPerHour: 23,
-  maxCustPerHour: 65,
-  avgCookiesPerCust: 6.3,
+  minCustPerHour: 3,
+  maxCustPerHour: 24,
+  avgCookiesPerCust: 1.2,
   custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
   cookiesPerHour: [],
   hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
@@ -117,9 +117,9 @@ seatacAirport.render();
 
 var seattleCenter = {
   name: 'Seattle Center',
-  minCustPerHour: 23,
-  maxCustPerHour: 65,
-  avgCookiesPerCust: 6.3,
+  minCustPerHour: 11,
+  maxCustPerHour: 38,
+  avgCookiesPerCust: 3.7,
   custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
   cookiesPerHour: [],
   hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
@@ -174,10 +174,10 @@ var seattleCenter = {
 seattleCenter.render();
 
 var capitolHill = {
-  name: 'First and Pike',
-  minCustPerHour: 23,
-  maxCustPerHour: 65,
-  avgCookiesPerCust: 6.3,
+  name: 'Capitol Hill',
+  minCustPerHour: 20,
+  maxCustPerHour: 38,
+  avgCookiesPerCust: 2.3,
   custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
   cookiesPerHour: [],
   hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
@@ -232,10 +232,10 @@ var capitolHill = {
 capitolHill.render();
 
 var alki = {
-  name: 'First and Pike',
-  minCustPerHour: 23,
-  maxCustPerHour: 65,
-  avgCookiesPerCust: 6.3,
+  name: 'Alki',
+  minCustPerHour: 2,
+  maxCustPerHour: 16,
+  avgCookiesPerCust: 4.6,
   custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
   cookiesPerHour: [],
   hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
