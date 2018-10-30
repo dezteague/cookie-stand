@@ -34,7 +34,6 @@ var location1stAve = {
       var ranNumCustomer = Math.floor(Math.random() * (this.maxCust - this.minCust)) + this.minCust; //min & max are inclusive
       this.avgCus.push(ranNumCustomer);
     }
-
   },
 
   averageCookiesPerHour: function () {
