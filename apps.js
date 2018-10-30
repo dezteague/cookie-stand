@@ -1,99 +1,290 @@
-// var name = 'Michaelangelo';
 
-// function sayHello(name){
-//   return `Hello, ${name}, how are you today?`;
-// }
+var pikeAndFirst = {
+  name: 'First and Pike',
+  minCustPerHour: 23,
+  maxCustPerHour: 65,
+  avgCookiesPerCust: 6.3,
+  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
+  cookiesPerHour: [],
+  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
+  dailyTotal: 0,
+  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
+      this.custPerHour.push(randomCust);
+    }
+    console.log(this.custPerHour);
+  },
+  generateHourlySales: function () {
+    // line below will populate custPerHour array
+    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
 
-// var turtleMichealangelo = {
-//   name: 'Michaelangelo',
-//   shell: true,
-//   age: 15,
-//   color: 'orange',
-//   type: 'box',
-//   size: 62.3,
-//   ninja: true,
-//   mutant: true,
-//   sayHello: function() {
-//     return `Hello, my name is ${this.name}, and I am ${this.size} .`;
-//   },
-// };
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
+      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
 
-var hoursOperation = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'];
-
-var location1stAve = {
-  name: '1st and Pike'
-  minCust: 23,
-  maxCust: 65,
-  avgCookieSale: 6.3,
-  avgCus: [],
-  avgCookie: [],
-  totalCookies: 0,
-  salesRandomCustomer: function () { //generates a random number of customers based on min & max
-    for (var i = 0; i < hoursOperation.length; i++) {
-      //   var min = Math.ceil(this.minCust);
-      //   var max = Math.floor(this.maxCust);
-      var ranNumCustomer = Math.floor(Math.random() * (this.maxCust - this.minCust)) + this.minCust; //min & max are inclusive
-      this.avgCus.push(ranNumCustomer);
+      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
     }
   },
+  render: function () { //this purpose of render is to get things to show up on the page
+    // the line below will generate hourly sales, which also generates customers per hour
+    this.generateHourlySales();
+    //this.hoursOfOps = ['6am', '7am', '8am']
+    //this.custPerHour = [24, 55, 33]
+    //this.cookiesPerHour = [128, 222, 332]
 
-  averageCookiesPerHour: function () {
-    this.salesRandomCustomer();
-    for (var i = 0; i < hoursOperation.length; i++) {
-      var avgCookieCount = Math.floor(this.avgCus[i] * this.avgCookieSale); //number of cookies sold based on a random number of customers
-      this.avgCookie.push(avgCookieCount);
+    var mainEl = document.getElementById('main-content');
+    var containerEl = document.createElement('section');
+
+    var headingEl = document.createElement('h3');
+    headingEl.textContent = this.name;
+    containerEl.appendChild(headingEl);
+
+    var ulEl = document.createElement('ul');
+
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var liEl = document.createElement('li');
+      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
+      ulEl.appendChild(liEl);
     }
+    var totalEl = document.createElement('li');
+    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
+    ulEl.appendChild(totalEl);
+
+    containerEl.appendChild(ulEl);
+    mainEl.appendChild(containerEl);
   },
-
-  totalCookiesSum: function () {
-    this.salesRandomCustomer();
-    for (var i = 0; i < hoursOperation.length; i++) {
-      this.totalCookies += this.avgCookie[i];
-    }
-    return this.totalCookies;
-  }
 };
-location1stAve.salesRandomCustomer();
-location1stAve.averageCookiesPerHour();
-location1stAve.totalCookiesSum();
+pikeAndFirst.render();
 
-//   render: function() {
-//     // create an element
-//     // provide content for that element
-//     // append the element to the page (in a specific place)
+var seatacAirport = {
+  name: 'SeaTac Airport',
+  minCustPerHour: 23,
+  maxCustPerHour: 65,
+  avgCookiesPerCust: 6.3,
+  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
+  cookiesPerHour: [],
+  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
+  dailyTotal: 0,
+  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
+      this.custPerHour.push(randomCust);
+    }
+    console.log(this.custPerHour);
+  },
+  generateHourlySales: function () {
+    // line below will populate custPerHour array
+    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
 
-//     var container = document.createElement('section');
-//     var nameEl = document.createElement('h3');
-//     var messageEl = document.createElement('p');
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
+      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
 
-//     nameEl.textContent = this.name;
-//     messageEl.textContent = `I am a ninja and I am ${this.color}.`;
+      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
+    }
+  },
+  render: function () { //this purpose of render is to get things to show up on the page
+    // the line below will generate hourly sales, which also generates customers per hour
+    this.generateHourlySales();
+    //this.hoursOfOps = ['6am', '7am', '8am']
+    //this.custPerHour = [24, 55, 33]
+    //this.cookiesPerHour = [128, 222, 332]
 
-//     container.appendChild(nameEl);
-//     container.appendChild(messageEl);
-//     console.log('container', container);
+    var mainEl = document.getElementById('main-content');
+    var containerEl = document.createElement('section');
 
-//     var mainEl = document.getElementById('main-content');
-//     mainEl.appendChild(container);
-//   }
-// };
+    var headingEl = document.createElement('h3');
+    headingEl.textContent = this.name;
+    containerEl.appendChild(headingEl);
 
-// var nums = [1, 2, 3, 4];
+    var ulEl = document.createElement('ul');
 
-// turtleDonatello.render();
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var liEl = document.createElement('li');
+      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
+      ulEl.appendChild(liEl);
+    }
+    var totalEl = document.createElement('li');
+    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
+    ulEl.appendChild(totalEl);
 
-render: function() {
-  var container = document.createElement('section');
-  var nameEl = document.createElement('h3');
-  var messageEl = document.createElement('li');
+    containerEl.appendChild(ulEl);
+    mainEl.appendChild(containerEl);
+  },
+};
+seatacAirport.render();
 
-  nameEl.textContent = this.name
-  messageEl.textContent = `${this.hoursOperation}: ${this.totalCookiesSum}`;
+var seattleCenter = {
+  name: 'Seattle Center',
+  minCustPerHour: 23,
+  maxCustPerHour: 65,
+  avgCookiesPerCust: 6.3,
+  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
+  cookiesPerHour: [],
+  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
+  dailyTotal: 0,
+  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
+      this.custPerHour.push(randomCust);
+    }
+    console.log(this.custPerHour);
+  },
+  generateHourlySales: function () {
+    // line below will populate custPerHour array
+    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
 
-  container.appendChild(nameEl);
-  container.appendChild(messageEl);
-  console.log('container', container);
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
+      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
 
-  var mainEl = document.getElementById('main-content');
-  mainEl.appendChild(Container);
-}
+      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
+    }
+  },
+  render: function () { //this purpose of render is to get things to show up on the page
+    // the line below will generate hourly sales, which also generates customers per hour
+    this.generateHourlySales();
+    //this.hoursOfOps = ['6am', '7am', '8am']
+    //this.custPerHour = [24, 55, 33]
+    //this.cookiesPerHour = [128, 222, 332]
+
+    var mainEl = document.getElementById('main-content');
+    var containerEl = document.createElement('section');
+
+    var headingEl = document.createElement('h3');
+    headingEl.textContent = this.name;
+    containerEl.appendChild(headingEl);
+
+    var ulEl = document.createElement('ul');
+
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var liEl = document.createElement('li');
+      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
+      ulEl.appendChild(liEl);
+    }
+    var totalEl = document.createElement('li');
+    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
+    ulEl.appendChild(totalEl);
+
+    containerEl.appendChild(ulEl);
+    mainEl.appendChild(containerEl);
+  },
+};
+seattleCenter.render();
+
+var capitolHill = {
+  name: 'First and Pike',
+  minCustPerHour: 23,
+  maxCustPerHour: 65,
+  avgCookiesPerCust: 6.3,
+  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
+  cookiesPerHour: [],
+  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
+  dailyTotal: 0,
+  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
+      this.custPerHour.push(randomCust);
+    }
+    console.log(this.custPerHour);
+  },
+  generateHourlySales: function () {
+    // line below will populate custPerHour array
+    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
+
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
+      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
+
+      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
+    }
+  },
+  render: function () { //this purpose of render is to get things to show up on the page
+    // the line below will generate hourly sales, which also generates customers per hour
+    this.generateHourlySales();
+    //this.hoursOfOps = ['6am', '7am', '8am']
+    //this.custPerHour = [24, 55, 33]
+    //this.cookiesPerHour = [128, 222, 332]
+
+    var mainEl = document.getElementById('main-content');
+    var containerEl = document.createElement('section');
+
+    var headingEl = document.createElement('h3');
+    headingEl.textContent = this.name;
+    containerEl.appendChild(headingEl);
+
+    var ulEl = document.createElement('ul');
+
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var liEl = document.createElement('li');
+      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
+      ulEl.appendChild(liEl);
+    }
+    var totalEl = document.createElement('li');
+    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
+    ulEl.appendChild(totalEl);
+
+    containerEl.appendChild(ulEl);
+    mainEl.appendChild(containerEl);
+  },
+};
+capitolHill.render();
+
+var alki = {
+  name: 'First and Pike',
+  minCustPerHour: 23,
+  maxCustPerHour: 65,
+  avgCookiesPerCust: 6.3,
+  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
+  cookiesPerHour: [],
+  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
+  dailyTotal: 0,
+  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
+      this.custPerHour.push(randomCust);
+    }
+    console.log(this.custPerHour);
+  },
+  generateHourlySales: function () {
+    // line below will populate custPerHour array
+    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
+
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
+      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
+
+      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
+    }
+  },
+  render: function () { //this purpose of render is to get things to show up on the page
+    // the line below will generate hourly sales, which also generates customers per hour
+    this.generateHourlySales();
+    //this.hoursOfOps = ['6am', '7am', '8am']
+    //this.custPerHour = [24, 55, 33]
+    //this.cookiesPerHour = [128, 222, 332]
+
+    var mainEl = document.getElementById('main-content');
+    var containerEl = document.createElement('section');
+
+    var headingEl = document.createElement('h3');
+    headingEl.textContent = this.name;
+    containerEl.appendChild(headingEl);
+
+    var ulEl = document.createElement('ul');
+
+    for (var i = 0; i < this.hourOfOps.length; i++) {
+      var liEl = document.createElement('li');
+      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
+      ulEl.appendChild(liEl);
+    }
+    var totalEl = document.createElement('li');
+    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
+    ulEl.appendChild(totalEl);
+
+    containerEl.appendChild(ulEl);
+    mainEl.appendChild(containerEl);
+  },
+};
+alki.render();
