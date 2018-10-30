@@ -288,3 +288,5 @@ var alki = {
   },
 };
 alki.render();
+
+//THIS WORKS! DONT RM ANYTHING ANYMORE, POR FAVOR!!!!
