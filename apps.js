@@ -21,6 +21,7 @@
 var hoursOperation = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'];
 
 var location1stAve = {
+  name: '1st and Pike'
   minCust: 23,
   maxCust: 65,
   avgCookieSale: 6.3,
@@ -60,7 +61,7 @@ location1stAve.totalCookiesSum();
 //     // create an element
 //     // provide content for that element
 //     // append the element to the page (in a specific place)
-//     // var container = document.createElement('bananas');  // This will create <bananas></bananas> BUT DOES NOT WORK
+
 //     var container = document.createElement('section');
 //     var nameEl = document.createElement('h3');
 //     var messageEl = document.createElement('p');
@@ -80,3 +81,19 @@ location1stAve.totalCookiesSum();
 // var nums = [1, 2, 3, 4];
 
 // turtleDonatello.render();
+
+render: function() {
+  var container = document.createElement('section');
+  var nameEl = document.createElement('h3');
+  var messageEl = document.createElement('li');
+
+  nameEl.textContent = this.name
+  messageEl.textContent = `${this.hoursOperation}: ${this.totalCookiesSum}`;
+
+  container.appendChild(nameEl);
+  container.appendChild(messageEl);
+  console.log('container', container);
+
+  var mainEl = document.getElementById('main-content');
+  mainEl.appendChild(Container);
+}
