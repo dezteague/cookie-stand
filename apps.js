@@ -1,21 +1,37 @@
+var stores = [];
 
-var pikeAndFirst = {
-  name: 'First and Pike',
-  minCustPerHour: 23,
-  maxCustPerHour: 65,
-  avgCookiesPerCust: 6.3,
-  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
-  cookiesPerHour: [],
-  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
-  dailyTotal: 0,
+function Stores(name, minCustPerHour, maxCustPerHour, avgCookiesPerCust)
+
+console.log('this', this)
+
+this.name = name;
+this.minCustPerHour = minCustPerHour;
+this.maxCustPerHour = maxCustPerHour;
+this.avgCookiesPerCust = avgCookiesPerCust;
+this.custPerHour = [];
+
+stores.push(this);
+this.render();
+
+Stores.prototype.render = function () {
+  // ---> This is where the function will calculate cookies for each store
+  var tbodyEl = document.getElementById('tbl-body'); // Anchor to HTMLElement with an ID of tbl-body
+  var trEl = document.createElement('tr'); // Create a new <tr></tr>
+  var thEl = document.createElement('th'); // Create a new <th></th>
+  thEl.textContent = this.name; // Give the th element text content
+  trEl.appendChild(thEl); // Add the th element as a child to the tr element
+
+  // ---> Here, put a loop so that the function will run through all the hours of operation and find the number of cookies for each hour.  this logic came from lab06
+
   generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
     for (var i = 0; i < this.hourOfOps.length; i++) {
       var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
       this.custPerHour.push(randomCust);
     }
     console.log(this.custPerHour);
-  },
-  generateHourlySales: function () {
+  }
+
+  generateHourlySales: function() {
     // line below will populate custPerHour array
     this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
 
@@ -24,269 +40,41 @@ var pikeAndFirst = {
       this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
 
       this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
+
+      // STEP one: create elements
+      var minCustPerHourEl = document.createElement('td');
+      var maxCustPerHourEl = document.createElement('td');
+      var avgCookiesPerCustEl = document.createElement('td');
+
+      // STEP two: give elements text content
+      minCustPerHourEl.textContent = this.minCustPerHour;
+      maxCustPerHourEl.textContent = this.maxCustPerHour;
+      avgCookiesPerCustEl.textContent = this.avgCookiesPerCust;
+
+      // STEP three: append the variables
+      trEl.appendChild(minCustPerHourEl);
+      trEl.appendChild(maxCustPerHourEl);
+      trEl.appendChild(avgCookiesPerCustEl);
+
+      // LAST: attach the row element to the body element
+      tbodyEl.appendChild(trEl);
+    };
+
+    function displayTable() {
+      var mainEl = document.getElementById('main-content');
+      var tblEl = document.createElement('table');
+      var theadEl = document.createElement('thead');
+      var tbodyEl = document.createElement('tbody');
+      var tfootEl = document.createElement('tfoot');
+
+      mainEl.appendChild(tblEl);
+      tblEl.appendChild(theadEl);
+      tblEl.appendChild(tbodyEl);
+      tblEl.appendChild(tfootEl);
+
+      tblEl.id = 'cookies-table';
+      theadEl.id = 'tbl-head';
+      tbodyEl.id = 'tbl-body';
+      tfootEl.id = 'tbl-foot';
+      tblEl.className = 'tbl';
     }
-  },
-  render: function () { //this purpose of render is to get things to show up on the page
-    // the line below will generate hourly sales, which also generates customers per hour
-    this.generateHourlySales();
-    //this.hoursOfOps = ['6am', '7am', '8am']
-    //this.custPerHour = [24, 55, 33]
-    //this.cookiesPerHour = [128, 222, 332]
-
-    var mainEl = document.getElementById('main-content');
-    var containerEl = document.createElement('section');
-
-    var headingEl = document.createElement('h3');
-    headingEl.textContent = this.name;
-    containerEl.appendChild(headingEl);
-
-    var ulEl = document.createElement('ul');
-
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var liEl = document.createElement('li');
-      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
-      ulEl.appendChild(liEl);
-    }
-    var totalEl = document.createElement('li');
-    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
-    ulEl.appendChild(totalEl);
-
-    containerEl.appendChild(ulEl);
-    mainEl.appendChild(containerEl);
-  },
-};
-pikeAndFirst.render();
-
-var seatacAirport = {
-  name: 'SeaTac Airport',
-  minCustPerHour: 3,
-  maxCustPerHour: 24,
-  avgCookiesPerCust: 1.2,
-  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
-  cookiesPerHour: [],
-  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
-  dailyTotal: 0,
-  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
-      this.custPerHour.push(randomCust);
-    }
-    console.log(this.custPerHour);
-  },
-  generateHourlySales: function () {
-    // line below will populate custPerHour array
-    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
-
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
-      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
-
-      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
-    }
-  },
-  render: function () { //this purpose of render is to get things to show up on the page
-    // the line below will generate hourly sales, which also generates customers per hour
-    this.generateHourlySales();
-    //this.hoursOfOps = ['6am', '7am', '8am']
-    //this.custPerHour = [24, 55, 33]
-    //this.cookiesPerHour = [128, 222, 332]
-
-    var mainEl = document.getElementById('main-content');
-    var containerEl = document.createElement('section');
-
-    var headingEl = document.createElement('h3');
-    headingEl.textContent = this.name;
-    containerEl.appendChild(headingEl);
-
-    var ulEl = document.createElement('ul');
-
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var liEl = document.createElement('li');
-      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
-      ulEl.appendChild(liEl);
-    }
-    var totalEl = document.createElement('li');
-    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
-    ulEl.appendChild(totalEl);
-
-    containerEl.appendChild(ulEl);
-    mainEl.appendChild(containerEl);
-  },
-};
-seatacAirport.render();
-
-var seattleCenter = {
-  name: 'Seattle Center',
-  minCustPerHour: 11,
-  maxCustPerHour: 38,
-  avgCookiesPerCust: 3.7,
-  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
-  cookiesPerHour: [],
-  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
-  dailyTotal: 0,
-  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
-      this.custPerHour.push(randomCust);
-    }
-    console.log(this.custPerHour);
-  },
-  generateHourlySales: function () {
-    // line below will populate custPerHour array
-    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
-
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
-      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
-
-      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
-    }
-  },
-  render: function () { //this purpose of render is to get things to show up on the page
-    // the line below will generate hourly sales, which also generates customers per hour
-    this.generateHourlySales();
-    //this.hoursOfOps = ['6am', '7am', '8am']
-    //this.custPerHour = [24, 55, 33]
-    //this.cookiesPerHour = [128, 222, 332]
-
-    var mainEl = document.getElementById('main-content');
-    var containerEl = document.createElement('section');
-
-    var headingEl = document.createElement('h3');
-    headingEl.textContent = this.name;
-    containerEl.appendChild(headingEl);
-
-    var ulEl = document.createElement('ul');
-
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var liEl = document.createElement('li');
-      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
-      ulEl.appendChild(liEl);
-    }
-    var totalEl = document.createElement('li');
-    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
-    ulEl.appendChild(totalEl);
-
-    containerEl.appendChild(ulEl);
-    mainEl.appendChild(containerEl);
-  },
-};
-seattleCenter.render();
-
-var capitolHill = {
-  name: 'Capitol Hill',
-  minCustPerHour: 20,
-  maxCustPerHour: 38,
-  avgCookiesPerCust: 2.3,
-  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
-  cookiesPerHour: [],
-  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
-  dailyTotal: 0,
-  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
-      this.custPerHour.push(randomCust);
-    }
-    console.log(this.custPerHour);
-  },
-  generateHourlySales: function () {
-    // line below will populate custPerHour array
-    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
-
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
-      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
-
-      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
-    }
-  },
-  render: function () { //this purpose of render is to get things to show up on the page
-    // the line below will generate hourly sales, which also generates customers per hour
-    this.generateHourlySales();
-    //this.hoursOfOps = ['6am', '7am', '8am']
-    //this.custPerHour = [24, 55, 33]
-    //this.cookiesPerHour = [128, 222, 332]
-
-    var mainEl = document.getElementById('main-content');
-    var containerEl = document.createElement('section');
-
-    var headingEl = document.createElement('h3');
-    headingEl.textContent = this.name;
-    containerEl.appendChild(headingEl);
-
-    var ulEl = document.createElement('ul');
-
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var liEl = document.createElement('li');
-      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
-      ulEl.appendChild(liEl);
-    }
-    var totalEl = document.createElement('li');
-    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
-    ulEl.appendChild(totalEl);
-
-    containerEl.appendChild(ulEl);
-    mainEl.appendChild(containerEl);
-  },
-};
-capitolHill.render();
-
-var alki = {
-  name: 'Alki',
-  minCustPerHour: 2,
-  maxCustPerHour: 16,
-  avgCookiesPerCust: 4.6,
-  custPerHour: [], // this comes from random generation in line 11. could be anything between 23-65
-  cookiesPerHour: [],
-  hourOfOps: ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '6pm', '7pm', '8pm'],
-  dailyTotal: 0,
-  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
-      this.custPerHour.push(randomCust);
-    }
-    console.log(this.custPerHour);
-  },
-  generateHourlySales: function () {
-    // line below will populate custPerHour array
-    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
-
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
-      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
-
-      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
-    }
-  },
-  render: function () { //this purpose of render is to get things to show up on the page
-    // the line below will generate hourly sales, which also generates customers per hour
-    this.generateHourlySales();
-    //this.hoursOfOps = ['6am', '7am', '8am']
-    //this.custPerHour = [24, 55, 33]
-    //this.cookiesPerHour = [128, 222, 332]
-
-    var mainEl = document.getElementById('main-content');
-    var containerEl = document.createElement('section');
-
-    var headingEl = document.createElement('h3');
-    headingEl.textContent = this.name;
-    containerEl.appendChild(headingEl);
-
-    var ulEl = document.createElement('ul');
-
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var liEl = document.createElement('li');
-      liEl.textContent = `${this.hourOfOps[i]}: ${this.cookiesPerHour[i]} cookies`;
-      ulEl.appendChild(liEl);
-    }
-    var totalEl = document.createElement('li');
-    totalEl.textContent = `Total: ${this.dailyTotal} cookies`;
-    ulEl.appendChild(totalEl);
-
-    containerEl.appendChild(ulEl);
-    mainEl.appendChild(containerEl);
-  },
-};
-alki.render();
-
-//THIS WORKS! DONT RM ANYTHING ANYMORE, POR FAVOR!!!!
