@@ -1,80 +1,100 @@
 var stores = [];
+var hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
+var hourlyCookieTotal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-function Stores(name, minCustPerHour, maxCustPerHour, avgCookiesPerCust)
 
-console.log('this', this)
+function Store(name, minCustPerHour, maxCustPerHour, avgCookiesPerCust, hoursOfOps) {
+  console.log('this', this)
 
-this.name = name;
-this.minCustPerHour = minCustPerHour;
-this.maxCustPerHour = maxCustPerHour;
-this.avgCookiesPerCust = avgCookiesPerCust;
-this.custPerHour = [];
+  this.name = name;
+  this.minCustPerHour = minCustPerHour;
+  this.maxCustPerHour = maxCustPerHour;
+  this.avgCookiesPerCust = avgCookiesPerCust;
+  this.custPerHour = [];
+  this.cookiesPerHour = [];
+  this.hoursOfOps = hoursOfOps;
+  this.dailyTotal = 0;
 
-stores.push(this);
-this.render();
+  stores.push(this);
 
-Stores.prototype.render = function () {
+  this.addRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
+  this.addHourlySales();
+  this.render();
+}
+
+Store.prototype.addRandomCustPerHour = function (min, max) { //the purpose of this method is to get a number of customers for each hour of the day
+  for (var i = 0; i < this.hoursOfOps.length; i++) {
+    var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down, so there are no decimals
+    this.custPerHour.push(randomCust); // number of customers per hour based on a randomly generated number of customers that lies somewhere between in the max and min given
+  }
+};
+
+Store.prototype.addHourlySales = function () {
+  //random number of customers will be multiplied by the average cookies per customer to get hourly sales
+  //this is achieved by using a loop to push hourly sales into each hour of operation
+  for (var i = 0; i < this.hoursOfOps.length; i++) {
+    var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
+    this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
+    this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
+  }
+}
+
+Store.prototype.render = function () {
   // ---> This is where the function will calculate cookies for each store
-  var tbodyEl = document.getElementById('tbl-body'); // Anchor to HTMLElement with an ID of tbl-body
-  var trEl = document.createElement('tr'); // Create a new <tr></tr>
-  var thEl = document.createElement('th'); // Create a new <th></th>
-  thEl.textContent = this.name; // Give the th element text content
-  trEl.appendChild(thEl); // Add the th element as a child to the tr element
+  var tableBodyEl = document.getElementById('tbl-body'); // Anchor to tbl-body element in HTML
+  var tableRowEl = document.createElement('tr'); // Create a new <tr></tr>
 
-  // ---> Here, put a loop so that the function will run through all the hours of operation and find the number of cookies for each hour.  this logic came from lab06
+  var tableHeadEl = document.createElement('th'); // Create a new <th></th>
+  tableHeadEl.textContent = this.name; // Give the th element text content
+  tableRowEl.appendChild(tableHeadEl); // Add the th element as a child to the tr element
 
-  generateRandomCustPerHour: function (min, max) { // the goal of this function is to get a number for each hourOfOp
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var randomCust = Math.floor(Math.random() * (max - min + 1) + min); // floor rounds down
-      this.custPerHour.push(randomCust);
-    }
-    console.log(this.custPerHour);
+  // ---> Here, put a loop so that the function will run through all the hours of operation and find the number of cookies for each hour. 
+  for (var i = 0; i < this.hoursOfOps.length; i++) {
+    var tableDataEl = document.createElement('td');
+    tableDataEl.textContent = this.cookiesPerHour[i];
+    tableRowEl.appendChild(tableDataEl);
   }
 
-  generateHourlySales: function() {
-    // line below will populate custPerHour array
-    this.generateRandomCustPerHour(this.minCustPerHour, this.maxCustPerHour);
+  tableBodyEl.appendChild(tableRowEl);
+};
 
-    for (var i = 0; i < this.hourOfOps.length; i++) {
-      var perHour = Math.floor(this.custPerHour[i] * this.avgCookiesPerCust);
-      this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
+function createHeader() {
+  var tableHeaderEl = document.createElement('thead');
+  tableHeaderEl.id = 'tbl-head';
+  return tableHeaderEl;
+}
 
-      this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
+function createFooter() {
+  var tableFooterEl = document.createElement('tfoot');
+  tableFooterEl.id = 'tbl-foot';
+  return tableFooterEl;
+}
 
-      // STEP one: create elements
-      var minCustPerHourEl = document.createElement('td');
-      var maxCustPerHourEl = document.createElement('td');
-      var avgCookiesPerCustEl = document.createElement('td');
+function createTable() {
+  // This function is used to establish ONE SINGLE table in the DOM for us to work with when we start rendering individual rows for each storeLocation
+  var mainEl = document.getElementById('main-content');
+  var tableEl = document.createElement('table');
+  var tableBodyEl = document.createElement('tbody');
 
-      // STEP two: give elements text content
-      minCustPerHourEl.textContent = this.minCustPerHour;
-      maxCustPerHourEl.textContent = this.maxCustPerHour;
-      avgCookiesPerCustEl.textContent = this.avgCookiesPerCust;
+  tableEl.id = 'daily-cookie-sales-table';
+  tableBodyEl.id = 'tbl-body';
 
-      // STEP three: append the variables
-      trEl.appendChild(minCustPerHourEl);
-      trEl.appendChild(maxCustPerHourEl);
-      trEl.appendChild(avgCookiesPerCustEl);
+  mainEl.appendChild(tableEl);
+  tableEl.appendChild(createHeader());
+  tableEl.appendChild(tableBodyEl);
+  tableEl.appendChild(createFooter());
 
-      // LAST: attach the row element to the body element
-      tbodyEl.appendChild(trEl);
-    };
+}
+createTable();
 
-    function displayTable() {
-      var mainEl = document.getElementById('main-content');
-      var tblEl = document.createElement('table');
-      var theadEl = document.createElement('thead');
-      var tbodyEl = document.createElement('tbody');
-      var tfootEl = document.createElement('tfoot');
+console.log(stores);
 
-      mainEl.appendChild(tblEl);
-      tblEl.appendChild(theadEl);
-      tblEl.appendChild(tbodyEl);
-      tblEl.appendChild(tfootEl);
+//Below: these variables will make a table with the store info
+var firstAndPike = new Store('1st and Pike', 23, 65, 6.3, ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm']);
+var seatacAirport = new Store('Seatac Airport', 3, 24, 1.2, ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm']);
+var seattleCenter = new Store('Seattle Center', 11, 38, 3.7, ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm']);
+var capitolHill = new Store('Capitol Hill', 20, 38, 2.3, ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm']);
+var alki = new Store('Alki', 2, 16, 4.6, ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm']);
 
-      tblEl.id = 'cookies-table';
-      theadEl.id = 'tbl-head';
-      tbodyEl.id = 'tbl-body';
-      tfootEl.id = 'tbl-foot';
-      tblEl.className = 'tbl';
-    }
+
+console.log(stores);
