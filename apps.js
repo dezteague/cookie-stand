@@ -1,10 +1,10 @@
 var stores = [];
-var hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
+var hoursOfOps = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
 var hourlyCookieTotal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 
 function Store(name, minCustPerHour, maxCustPerHour, avgCookiesPerCust, hoursOfOps) {
-  console.log('this', this)
+  console.log('this', this);
 
   this.name = name;
   this.minCustPerHour = minCustPerHour;
@@ -37,7 +37,7 @@ Store.prototype.addHourlySales = function () {
     this.cookiesPerHour.push(perHour); //multiply a random number of customers * average cookies per customer
     this.dailyTotal += perHour; //+= means this.dailyTotal + perHour; per hour cookies are added into the daily sum
   }
-}
+};
 
 Store.prototype.render = function () {
   // ---> This is where the function will calculate cookies for each store
@@ -48,7 +48,7 @@ Store.prototype.render = function () {
   tableHeadEl.textContent = this.name; // Give the th element text content
   tableRowEl.appendChild(tableHeadEl); // Add the th element as a child to the tr element
 
-  // ---> Here, put a loop so that the function will run through all the hours of operation and find the number of cookies for each hour. 
+  // ---> Here, put a loop so that the function will run through all the hours of operation and find the number of cookies for each hour.
   for (var i = 0; i < this.hoursOfOps.length; i++) {
     var tableDataEl = document.createElement('td');
     tableDataEl.textContent = this.cookiesPerHour[i];
@@ -59,14 +59,23 @@ Store.prototype.render = function () {
 };
 
 function createHeader() {
-  var tableHeaderEl = document.createElement('thead');
-  tableHeaderEl.id = 'tbl-head';
-  return tableHeaderEl;
+  var tableHeadEl = document.getElementById('tbl-head');
+  var tableRowHeadEl = document.createElement('tr');
+  tableHeadEl.appendChild(tableRowHeadEl);
+
+  var thHeadEl = document.createElement('th');
+  tableRowHeadEl.appendChild(thHeadEl);
+  thHeadEl.textContent = ' ';
+
+  for(var i = 0; i < hoursOfOps.length; i++) {
+    var hours = document.createElement('th');
+    tableRowHeadEl.appendChild(hours);
+    hours.textContent = hoursOfOps[i];
+  }
 }
 
 function createFooter() {
-  var tableFooterEl = document.createElement('tfoot');
-  tableFooterEl.id = 'tbl-foot';
+  var tableFooterEl = document.createElement('tbl-foot');
   return tableFooterEl;
 }
 
@@ -74,16 +83,21 @@ function createTable() {
   // This function is used to establish ONE SINGLE table in the DOM for us to work with when we start rendering individual rows for each storeLocation
   var mainEl = document.getElementById('main-content');
   var tableEl = document.createElement('table');
+  var tableHeadEl = document.createElement('thead');
   var tableBodyEl = document.createElement('tbody');
+  var tableFootEl = document.createElement('tfoot');
 
   tableEl.id = 'daily-cookie-sales-table';
+  tableHeadEl.id = 'tbl-head';
   tableBodyEl.id = 'tbl-body';
+  tableFootEl.id = 'tbl-foot';
 
   mainEl.appendChild(tableEl);
-  tableEl.appendChild(createHeader());
+  tableEl.appendChild(tableHeadEl);
   tableEl.appendChild(tableBodyEl);
-  tableEl.appendChild(createFooter());
+  tableEl.appendChild(tableFootEl);
 
+  createHeader();
 }
 createTable();
 
