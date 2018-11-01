@@ -1,7 +1,5 @@
 var stores = [];
 var hoursOfOps = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
-var hourlyCookieTotal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
 
 function Store(name, minCustPerHour, maxCustPerHour, avgCookiesPerCust, hoursOfOps) {
   console.log('this', this);
@@ -54,11 +52,19 @@ Store.prototype.render = function () {
     tableDataEl.textContent = this.cookiesPerHour[i];
     tableRowEl.appendChild(tableDataEl);
   }
+  
+  for (var i = 0; i < this.cookiesPerHour.length; i++) {
+    var tableDataEl = document.createElement('td');
+    tableDataEl.textContent = totalCookiesByStore;
+  }
 
   tableBodyEl.appendChild(tableRowEl);
 };
 
-function createHeader() {
+//------>CREATE ANOTHER LOOP THAT WILL ADD ALL HOURLY SALES TOGETHER FOR DAILY TOTAL OF COOKIES FOR EACH STORE<--------------
+//------>THE TOTALS WILL APPEAR AS ANOTHER "COLUMN" AFTER HOURS OF OPERATION<-----
+
+function createHeader() {// this function will allow the table to print the hours of operation at the top
   var tableHeadEl = document.getElementById('tbl-head');
   var tableRowHeadEl = document.createElement('tr');
   tableHeadEl.appendChild(tableRowHeadEl);
@@ -67,14 +73,14 @@ function createHeader() {
   tableRowHeadEl.appendChild(thHeadEl);
   thHeadEl.textContent = ' ';
 
-  for(var i = 0; i < hoursOfOps.length; i++) {
+  for(var i = 0; i < hoursOfOps.length; i++) {// this loop will make all the hours show up, not just 6am
     var hours = document.createElement('th');
     tableRowHeadEl.appendChild(hours);
     hours.textContent = hoursOfOps[i];
   }
 }
 
-function createFooter() {
+function createFooter() {// this function will allow the hourly totals to print at the bottom of the table
   var tableFooterEl = document.createElement('tbl-foot');
   return tableFooterEl;
 }
@@ -112,3 +118,23 @@ var alki = new Store('Alki', 2, 16, 4.6, ['6am', '7am', '8am', '9am', '10am', '1
 
 
 console.log(stores);
+
+//LAB 08- ADD FORMS IN ORDER TO add new locations to the table by simply inputting their information with the form
+//ADD footer row that calculates hourly totals.  Essentially, "column" totals by hour
+
+//Forms
+
+//1. Select the store:
+  // firstAndPike
+  // seatacAirport
+  // seattleCenter
+  // capitolHill
+  // alki
+
+//2. type nubmer
+  //min
+  //max
+  //average
+
+//3. type text
+  //store name
