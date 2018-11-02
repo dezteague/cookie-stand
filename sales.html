@@ -4,8 +4,28 @@
   <title>Document</title>
 </head>
 <body>
+
   <header></header>
   <main id="main-content">
+    <form id="sales-form">
+      <label>Store Name
+        <!-- the type is important, make sure it correlates with user input -->
+        <input name="storename" type="text" placeholder="Enter Store Name">
+      </label>
+
+      <label>Minimum Customers Per Hour
+        <input name="min" type="number" placeholder="Ex: 20">
+      </label>
+
+      <label>Maximum Customers Per Hour
+        <input name="max" type="number" placeholder="Ex: 42">
+      </label>
+
+      <label for="avg">Average Cookies Per Customer</label>
+      <input id="avg" name="avg" type="number" step='0.01' placeholder="Ex: 2.5">
+
+      <button type="submit">Submit</button>
+    </form>
   </main>
   <footer></footer>
 
