@@ -1,5 +1,7 @@
+'strict';
+
 var stores = [];//this array is left empty so that stores can be added later
-var hoursOfOps = ['Location','6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
+var hoursOfOps = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
 
 function Store(name, min, max, avg) { //the items below are things I want to know for each store individually
   //Key:value pairs
