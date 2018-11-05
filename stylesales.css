@@ -1,3 +1,8 @@
-body {
+body{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background-color: salmon;
 }
+
+table, th, tbody, td {
+    border: 1px solid black;
+ }
